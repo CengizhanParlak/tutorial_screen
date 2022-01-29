@@ -92,7 +92,6 @@ class _TutorialScreenState extends State<TutorialScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    print('renderlandı bre');
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade900,
       body: PageView.builder(
