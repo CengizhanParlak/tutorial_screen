@@ -58,8 +58,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-List<bool> sayfaSecimleri = [true, false, false, false, false];
-List<String> sayfalar = [
+List<bool> isOnThisPage = [true, false, false, false, false];
+List<String> pageTitle = [
   'Tutorial page 1',
   'Tutorial page 2',
   'Tutorial page 3',
@@ -84,169 +84,156 @@ class _TutorialScreenState extends State<TutorialScreen> with TickerProviderStat
   }
 
   void _onPageViewChange(int value) {
-    sayfaSecimleri = [false, false, false, false, false];
+    int indexOfTrue = isOnThisPage.indexOf(true);
+    isOnThisPage[indexOfTrue] = false;
     setState(() {
-      sayfaSecimleri[value] = true;
+      isOnThisPage[value] = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.blueGrey.shade900,
-      body: PageView.builder(
-        controller: _pageController,
-        onPageChanged: _onPageViewChange,
-        itemCount: sayfalar.length,
-        physics: const ClampingScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return Center(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      sayfalar.elementAt(
-                        index,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        _pageController.animateToPage(index + 1,
-                            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_right_sharp),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          } else if (index == sayfalar.length - 1) {
-            return Center(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      sayfalar.elementAt(
-                        index,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () {
-                        _pageController.animateToPage(index - 1,
-                            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-                      },
-                      icon: const Icon(
-                        Icons.keyboard_arrow_left_sharp,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            onPageChanged: _onPageViewChange,
+            itemCount: pageTitle.length,
+            physics: const ClampingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                return Center(
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          pageTitle.elementAt(
+                            index,
+                          ),
                         ),
-                        child: const Text(
-                          'I understood',
-                          style: TextStyle(color: Colors.black),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            _pageController.animateToPage(index + 1,
+                                duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                          },
+                          icon: const Icon(Icons.keyboard_arrow_right_sharp),
                         ),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/main');
-                        },
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () {
-                        _pageController.animateToPage(index - 1,
-                            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_left_sharp),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      sayfalar.elementAt(
-                        index,
+                );
+              } else if (index == pageTitle.length - 1) {
+                return Center(
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          pageTitle.elementAt(
+                            index,
+                          ),
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            _pageController.animateToPage(index - 1,
+                                duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                          },
+                          icon: const Icon(
+                            Icons.keyboard_arrow_left_sharp,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            child: const Text(
+                              'I understood',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/main');
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      onPressed: () {
-                        _pageController.animateToPage(index + 1,
-                            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_right_sharp),
-                    ),
+                );
+              } else {
+                return Center(
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            _pageController.animateToPage(index - 1,
+                                duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                          },
+                          icon: const Icon(Icons.keyboard_arrow_left_sharp),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          pageTitle.elementAt(
+                            index,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            _pageController.animateToPage(index + 1,
+                                duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                          },
+                          icon: const Icon(Icons.keyboard_arrow_right_sharp),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-        },
-      ),
-      persistentFooterButtons: [
-        Center(
-          child: Wrap(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  sayfaSecimleri.elementAt(0) ? Icons.circle_outlined : Icons.circle_sharp,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  sayfaSecimleri.elementAt(1) ? Icons.circle_outlined : Icons.circle_sharp,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  sayfaSecimleri.elementAt(2) ? Icons.circle_outlined : Icons.circle_sharp,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  sayfaSecimleri.elementAt(3) ? Icons.circle_outlined : Icons.circle_sharp,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  sayfaSecimleri.elementAt(4) ? Icons.circle_outlined : Icons.circle_sharp,
-                ),
-              ),
-            ],
+                );
+              }
+            },
           ),
-        )
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              height: size.height * 0.2,
+              child: Wrap(
+                children: [
+                  for (int i = 0; i < pageTitle.length; i++) ...{
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Icon(
+                        isOnThisPage.elementAt(i) ? Icons.circle_outlined : Icons.circle_sharp,
+                        size: size.height * 0.0225,
+                      ),
+                    ),
+                  },
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
